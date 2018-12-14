@@ -3,7 +3,7 @@
     "description": "Object relational mapping component of RabbitPHP framework",
     "type": "component",
     "require": {
-        "rabbitphp/dependency-injector": "*",
+        "rabbitphp/dependency-container": "*",
         "rabbitphp/file": "*",
         "rabbitphp/mvc": "*"
     },
