@@ -1,0 +1,24 @@
+{
+    "name": "xirion/orm",
+    "description": "Database component of xirion framework",
+    "type": "component",
+    "require": {
+        "rabbitphp/dependency-injector": "*",
+        "rabbitphp/file": "*",
+        "rabbitphp/mvc": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kaktus",
+            "email": "kaktus@xirion.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Rabbit\\ORM\\": "src",
+            "Rabbit\\ORM\\Drivers\\": "src/Drivers",
+            "Rabbit\\ORM\\Queries\\": "src/Queries"
+        }
+    }
+}
