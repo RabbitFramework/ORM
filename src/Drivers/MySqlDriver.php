@@ -10,7 +10,7 @@ namespace Rabbit\ORM\Drivers;
 
 use Rabbit\ORM\Builders\MySqlQuery;
 use Rabbit\ORM\Builders\QueryInterface;
-use Rabbit\DependencyInjector\DependencyContainer;
+use Rabbit\DependencyContainer\DependencyContainer;
 
 class MySqlDriver extends BaseDriver
 {

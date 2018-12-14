@@ -8,7 +8,7 @@
 
 namespace Rabbit\ORM;
 
-use Rabbit\DependencyInjector\DependencyContainer;
+use Rabbit\DependencyContainer\DependencyContainer;
 use Rabbit\ORM\Drivers\MySqlDriver;
 
 class DriverContainer extends DependencyContainer
