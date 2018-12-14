@@ -1,6 +1,6 @@
 {
-    "name": "xirion/orm",
-    "description": "Database component of xirion framework",
+    "name": "rabbitphp/orm",
+    "description": "Object relational mapping component of RabbitPHP framework",
     "type": "component",
     "require": {
         "rabbitphp/dependency-injector": "*",
