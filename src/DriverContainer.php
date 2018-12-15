@@ -24,7 +24,7 @@ class DriverContainer extends DependencyContainer
     }
 
     public function __construct() {
-        $this->addAliases(MySqlDriver::class, ['mysql', 'MySql', 'MYSQL']);
+        $this->addAlias(MySqlDriver::class, 'mysql', 'MySql', 'MYSQL');
     }
 
 }
