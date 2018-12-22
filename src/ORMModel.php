@@ -9,8 +9,9 @@
 namespace Rabbit\ORM;
 
 use Rabbit\MVC\ModelInterface;
+use Rabbit\ORM\Mapper\Mapper;
 
-class ORMModel extends ORMMapper implements ModelInterface
+class ORMModel extends Mapper implements ModelInterface
 {
 
 }
