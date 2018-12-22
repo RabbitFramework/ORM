@@ -115,7 +115,7 @@ abstract class BaseDriver implements DriverInterface
     }
 
     /**
-     * @return BaseBuilder
+     * @return QueryInterface
      */
     abstract public function getBuilder() : QueryInterface;
 

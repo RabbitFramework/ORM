@@ -8,17 +8,17 @@
 
 namespace Rabbit\ORM\Drivers;
 
-use Rabbit\ORM\Builders\MySqlQuery;
 use Rabbit\ORM\Builders\QueryInterface;
 use Rabbit\DependencyContainer\DependencyContainer;
+use Rabbit\ORM\Builders\Sql;
 
 class MySqlDriver extends BaseDriver
 {
 
-    public function __construct(string $host, string $database, string $username, string $password)
+    public function __construct(string $host, string $database, string $username, string $password, string $charset = 'utf8')
     {
         if(extension_loaded('pdo_mysql')) {
-            parent::__construct(['host' => $host, 'database' => $database, 'username' => $username, 'password' => $password]);
+            parent::__construct(['host' => $host, 'database' => $database, 'username' => $username, 'password' => $password, 'charset' => $charset]);
             $this->getConnection();
         } else {
             throw new DriverException('[Rabbit => ORM->MySqlDriver::__construct()] Unable to construct the class because the extension `pdo_mysql` is not loaded in the php.ini');
@@ -28,7 +28,7 @@ class MySqlDriver extends BaseDriver
     public function getConnection() {
         if(!$this->hasConnection()) {
             try {
-                $this->_connection = new \PDO('mysql:host='.$this->_connectionParameters['host'].';dbname='.$this->_connectionParameters['database'], $this->_connectionParameters['username'], $this->_connectionParameters['password']);
+                $this->_connection = new \PDO('mysql:host='.$this->_connectionParameters['host'].';dbname='.$this->_connectionParameters['database'].';charset='.$this->_connectionParameters['charset'], $this->_connectionParameters['username'], $this->_connectionParameters['password']);
             } catch (\PDOException $e) {
                 throw new DriverException('[Rabbit => Database->MySqlDriver::getConnection()] Unable to create an instance of PDO class: '.$e);
             }
@@ -117,6 +117,6 @@ class MySqlDriver extends BaseDriver
     }
 
     public function getBuilder() : QueryInterface {
-        return DependencyContainer::getInstance()->get(MySqlQuery::class)->getInstance(['driver' => $this]);
+        return DependencyContainer::getInstance()->get(Sql::class)->getInstance(['driver' => $this]);
     }
 }
