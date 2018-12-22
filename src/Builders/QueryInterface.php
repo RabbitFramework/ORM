@@ -8,6 +8,10 @@
 
 namespace Rabbit\ORM\Builders;
 
+use Rabbit\ORM\Builders\Entities\InsertEntityInterface;
+use Rabbit\ORM\Builders\Entities\SelectEntityInterface;
+use Rabbit\ORM\Builders\Entities\UpdateEntityInterface;
+
 /**
  * Interface QueryInterface
  * @package Rabbit\ORM\Builders
@@ -15,100 +19,10 @@ namespace Rabbit\ORM\Builders;
 interface QueryInterface
 {
 
-    /**
-     * @param string ...$select
-     * @return $this
-     */
-    public function select(string ...$select);
+    public static function select(string $select = '') : SelectEntityInterface;
 
-    /**
-     * @param $reference
-     * @param $alias
-     * @return mixed
-     */
-    public function as($reference, $alias);
+    public static function insert(string $insert = '') : InsertEntityInterface;
 
-    /**
-     * @param string $from
-     * @return $this
-     */
-    public function from(string $from);
-
-    /**
-     * @param string ...$where
-     * @return $this
-     */
-    public function where(string ...$where);
-
-    /**
-     * @param int ...$index
-     * @return mixed
-     */
-    public function and(int ...$index);
-
-    /**
-     * @param int ...$index
-     * @return mixed
-     */
-    public function or(int ...$index);
-
-    /**
-     * @param string $insert
-     * @return $this
-     */
-    public function insert(string $insert);
-
-    /**
-     * @param string ...$column
-     * @return mixed
-     */
-    public function columns(string ...$column);
-
-    /**
-     * @param string ...$value
-     * @return $this
-     */
-    public function values(string ...$value);
-
-    /**
-     * @return mixed
-     */
-    public function alter();
-
-    /**
-     * @return mixed
-     */
-    public function create();
-
-    /**
-     * @return mixed
-     */
-    public function drop();
-
-    /**
-     * @return mixed
-     */
-    public function table(string $table);
-
-    /**
-     * @param string $column
-     * @return mixed
-     */
-    public function column(string $column);
-
-    /**
-     * @return mixed
-     */
-    public function dataType(string $type);
-
-    /**
-     * @return mixed
-     */
-    public function getSql();
-
-    /**
-     * @return string
-     */
-    public function __toString();
+    public static function update(string $update = '') : UpdateEntityInterface;
 
 }

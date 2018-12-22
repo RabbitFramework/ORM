@@ -72,10 +72,9 @@ class MySqlQuery extends BaseBuilder implements QueryInterface
      */
     public function from(string $from)
     {
-        if($this->type === self::SELECT && ($this->lastExecuted === self::SELECT || $this->lastExecuted === self::AS)) {
+        if($this->type === self::SELECT && ($this->lastExecuted === self::SELECT || $this->lastExecuted === self::AS))
             $this->from = $from;
-            $this->lastExecuted = self::FROM;
-        }
+        $this->lastExecuted = self::FROM;
         return $this;
     }
 
@@ -138,30 +137,59 @@ class MySqlQuery extends BaseBuilder implements QueryInterface
      * @return $this
      */
     public function columns(string ...$column) {
-        if(($this->type === self::INSERT || $this->type === self::UPDATE) && ($this->lastExecuted === self::INSERT || $this->lastExecuted === self::SET)) {
+        if(($this->type === self::INSERT || $this->type === self::UPDATE) && ($this->lastExecuted === self::INSERT || $this->lastExecuted === self::SET))
             $this->columns = $column;
-            $this->lastExecuted = self::COLUMNS;
-        }
+        $this->lastExecuted = self::COLUMNS;
         return $this;
     }
 
     /**
-     * @param string ...$value
+     * This function can only be used to set only one column => only triggered if $this->type = ALTER | CREATE | DROP | INSERT
+     *
+     * @param string $column
      * @return $this
      */
-    public function values(string ...$value) {
-        if(($this->type === self::INSERT || $this->type === self::UPDATE) && ($this->lastExecuted === self::INSERT || $this->lastExecuted === self::VALUES || $this->lastExecuted === self::COLUMNS || $this->lastExecuted === self::VALUES)) {
-            $this->values = $value;
-            $this->lastExecuted = self::VALUES;
-        }
+    public function column(string $column) {
+        if(($this->type === self::CREATE || $this->type === self::ALTER) || $this->lastExecuted === self::ALTER)
+            $this->column = $column;
+        elseif(($this->type === self::INSERT || $this->type === self::UPDATE) && ($this->lastExecuted === self::INSERT || $this->lastExecuted === self::SET))
+            $this->columns[] = $column;
+        $this->lastExecuted = self::COLUMN;
         return $this;
     }
 
+    /**
+     * @param $value
+     */
+    public function value($value) {
+        if(($this->type === self::INSERT || $this->type === self::UPDATE) && ($this->lastExecuted === self::INSERT || $this->lastExecuted === self::VALUES || $this->lastExecuted === self::VALUE || $this->lastExecuted === self::COLUMNS || $this->lastExecuted === self::COLUMN))
+            $this->values = $value;
+        $this->lastExecuted = self::VALUE;
+        return $this;
+    }
+
+    /**
+     * @param string $value
+     * @return $this
+     */
+    public function values(string $value) {
+        if(($this->type === self::INSERT || $this->type === self::UPDATE) && ($this->lastExecuted === self::INSERT || $this->lastExecuted === self::VALUES || $this->lastExecuted === self::VALUE || $this->lastExecuted === self::COLUMNS || $this->lastExecuted === self::COLUMN))
+            $this->values = $value;
+        $this->lastExecuted = self::VALUES;
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
     public function update() {
         $this->type = $this->lastExecuted = self::UPDATE;
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function set() {
         $this->lastExecuted = self::SET;
         return $this;
@@ -183,6 +211,9 @@ class MySqlQuery extends BaseBuilder implements QueryInterface
         return $this;
     }
 
+    /**
+     * @return $this|mixed
+     */
     public function drop() {
         $this->type = $this->lastExecuted = self::DROP;
         return $this;
@@ -195,24 +226,9 @@ class MySqlQuery extends BaseBuilder implements QueryInterface
      * @return $this
      */
     public function table(string $table) {
-        if(($this->type === self::CREATE || $this->type === self::ALTER || $this->type === self::UPDATE) && ($this->lastExecuted === self::ALTER || $this->lastExecuted === self::UPDATE)) {
+        if(($this->type === self::CREATE || $this->type === self::ALTER || $this->type === self::UPDATE) && ($this->lastExecuted === self::ALTER || $this->lastExecuted === self::UPDATE))
             $this->table = $table;
-            $this->lastExecuted = self::TABLE;
-        }
-        return $this;
-    }
-
-    /**
-     * This function can only be used to set only one column => only triggered if $this->type = ALTER | CREATE | DROP
-     *
-     * @param string $column
-     * @return $this
-     */
-    public function column(string $column) {
-        if(($this->type === self::CREATE || $this->type === self::ALTER) || $this->lastExecuted === self::ALTER) {
-            $this->column = $column;
-            $this->lastExecuted = self::COLUMN;
-        }
+        $this->lastExecuted = self::TABLE;
         return $this;
     }
 
@@ -247,6 +263,9 @@ class MySqlQuery extends BaseBuilder implements QueryInterface
         return $sql;
     }
 
+    /**
+     * @return string
+     */
     protected function generateUpdate() {
         $sql = "UPDATE {$this->table} SET ";
         foreach ($this->columns as $key => $column) {
