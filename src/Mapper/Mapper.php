@@ -10,11 +10,11 @@ namespace Rabbit\ORM\Mapper;
 
 use Rabbit\ORM\Builders\Sql;
 use Rabbit\ORM\Drivers\DriverInterface;
-use Rabbit\ORM\ORM;
+use Rabbit\ORM\Database;
 
 /**
  * Class Mapper
- * @package Rabbit\ORM\Mapper
+ * @package Rabbit\Database\Mapper
  */
 class Mapper
 {
@@ -25,6 +25,7 @@ class Mapper
     protected $driver;
     protected $builder;
     protected $table;
+    public $rows;
 
     /**
      * Mapper constructor.
@@ -32,13 +33,14 @@ class Mapper
      */
     public function __construct(string $table = null)
     {
-        $this->driver = ORM::getInstance()->getDriver();
+        $this->driver = Database::getInstance()->getDriver();
 
         $this->builder = $this->driver->getBuilder();
 
         $this->table = new EntityTable($this, $table ?? strtolower(get_class($this)));
 
         $this->getAllColumnsEntities();
+        $this->getAllRowsEntities();
     }
 
     public function saveColumn(string $name) {
@@ -89,6 +91,58 @@ class Mapper
         $fields = [];
         foreach ($this->table->getColumnsNames() as $name) {
             $fields[] = $this->getColumnEntity($name);
+        }
+        return $fields;
+    }
+
+    public function saveRow($primaryReference) {
+        if(isset($this->rows[$primaryReference]) && $this->rows[$primaryReference] instanceof EntityRow) {
+            $this->rows[$primaryReference]->save();
+            $this->getAllRowsEntities();
+            return true;
+        }
+        return false;
+    }
+
+    public function saveRows(...$primaryReference) {
+        foreach ($primaryReference as $name) {
+            $this->saveRow($name);
+        }
+        return true;
+    }
+
+    public function saveAllRows() {
+        $primaryKey = $this->table->getPrimaryKey();
+        foreach ($this->$primaryKey->values as $name) {
+            $this->saveRow($name);
+        }
+        return true;
+    }
+
+    public function getRowEntity($primaryReference) {
+        $primaryKey = $this->table->getPrimaryKey();
+        if(in_array($primaryReference, $this->$primaryKey->values)) {
+            if(!isset($this->rows[$primaryReference])) {
+                $this->rows[$primaryReference] = new EntityRow($this, $primaryReference);
+            }
+            return $this->rows[$primaryReference];
+        }
+        return null;
+    }
+
+    public function getRowsEntities(...$primaryReferences) {
+        $rows = [];
+        foreach ($primaryReferences as $primaryReference) {
+            $rows[] = $this->getRowEntity($primaryReference);
+        }
+        return $rows;
+    }
+
+    public function getAllRowsEntities() {
+        $fields = [];
+        $primaryKey = $this->table->getPrimaryKey();
+        foreach ($this->$primaryKey->values as $primaryReference) {
+            $fields[] = $this->getRowEntity($primaryReference);
         }
         return $fields;
     }

@@ -10,11 +10,11 @@ namespace Rabbit\ORM\Mapper;
 
 
 use Rabbit\ORM\Builders\Sql;
-use Rabbit\ORM\ORM;
+use Rabbit\ORM\Database;
 
 /**
  * Class EntityColumn
- * @package Rabbit\ORM\Mapper
+ * @package Rabbit\Database\Mapper
  */
 class EntityColumn
 {
@@ -42,7 +42,7 @@ class EntityColumn
     /**
      * @var
      */
-    public $column;
+    public $values;
 
     public function __construct(Mapper $mapper, string $columnName)
     {
@@ -56,43 +56,43 @@ class EntityColumn
     }
 
     public function getValues() {
-        return $this->column;
+        return $this->values;
     }
 
     public function set(int $position, string $value) {
-        $this->column[$position] = $value;
+        $this->values[$position] = $value;
         return $this;
     }
 
     public function add(string $value) {
-        $this->column[] = $value;
+        $this->values[] = $value;
         return $this;
     }
 
     public function delete(int $position) {
-        unset($this->column[$position]);
+        unset($this->values[$position]);
         return $this;
     }
 
     public function update() {
-        $this->column = $this->get();
-        return $this->column;
+        $this->values = $this->get();
+        return $this->values;
     }
 
     public function save() {
         $onlineKeys = $this->get();
-        $primaryKey = $this->table->getPrimaryKey()[0];
+        $primaryKey = $this->table->getPrimaryKey();
         foreach (array_keys($onlineKeys) as $getKeys) {
-            if(isset($this->column[$getKeys])) { // UPDATE
-                if($this->column[$getKeys] !== $onlineKeys[$getKeys]) {
-                    $this->driver->add($this->builder->update($this->table->getTableName())->column($this->columnName)->values("'{$this->column[$getKeys]}'")->where("{$primaryKey}={$this->mapper->$primaryKey->column[$getKeys]}"))->execute();
+            if(isset($this->values[$getKeys])) { // UPDATE
+                if($this->values[$getKeys] !== $onlineKeys[$getKeys]) {
+                    $this->driver->add($this->builder->update($this->table->getTableName())->column($this->columnName)->values("'".htmlspecialchars(addslashes($this->values[$getKeys]))."'")->where("{$primaryKey}={$this->mapper->$primaryKey->column[$getKeys]}"))->execute();
                 }
             } else { // DELETE
-                $this->driver->add($this->builder->update($this->table->getTableName())->column($this->columnName)->values('null')->where("{$primaryKey}={$this->mapper->$primaryKey->column[$getKeys]}"))->execute();
+                $this->driver->add($this->builder->update($this->table->getTableName())->column($this->columnName)->values('null')->where("{$primaryKey}={$this->mapper->$primaryKey->values[$getKeys]}"))->execute();
             }
         }
-        foreach (array_diff(array_keys($this->column), array_keys($onlineKeys)) as $diff) { // Add
-            $this->driver->add($this->builder->insert($this->table->getTableName())->column($this->columnName)->values(addslashes($this->column[$diff])))->execute();
+        foreach (array_diff(array_keys($this->values), array_keys($onlineKeys)) as $diff) { // Add
+            $this->driver->add($this->builder->insert($this->table->getTableName())->column($this->columnName)->values("'".htmlspecialchars(addslashes($this->values[$diff]))."'"))->execute();
             if($this->driver->getQuery()->isExecuted) {
                 $this->driver->add($this->builder->select("max({$primaryKey})")->from($this->table->getTableName()))->execute();
                 if($this->driver->getQuery()->isExecuted) {
@@ -112,7 +112,7 @@ class EntityColumn
     }
 
     public function getValuePosition(string $value) {
-        return array_search($value, $this->column);
+        return array_search($value, $this->values);
     }
 
 }

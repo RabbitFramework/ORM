@@ -8,11 +8,11 @@
 
 namespace Rabbit\ORM\Queries;
 
-use Rabbit\ORM\ORM;
+use Rabbit\ORM\Database;
 
 /**
  * Class Query
- * @package Rabbit\ORM\Queries
+ * @package Rabbit\Database\Queries
  */
 class Query
 {

@@ -10,7 +10,7 @@ namespace Rabbit\ORM;
 
 /**
  * Class ORMMapper
- * @package Rabbit\ORM
+ * @package Rabbit\Database
  */
 class ORMMapper
 {
@@ -24,7 +24,7 @@ class ORMMapper
 
     public function __construct(string $table = null)
     {
-        $this->driver = ORM::getInstance()->getDriver();
+        $this->driver = Database::getInstance()->getDriver();
 
         $this->builder = $this->driver->getBuilder();
 

@@ -9,11 +9,11 @@
 namespace Rabbit\ORM\Mapper;
 
 
-use Rabbit\ORM\ORM;
+use Rabbit\ORM\Database;
 
 /**
  * Class EntityTable
- * @package Rabbit\ORM\Mapper
+ * @package Rabbit\Database\Mapper
  */
 class EntityTable
 {
@@ -61,6 +61,15 @@ class EntityTable
         return [];
     }
 
+    public function getRowsCount() {
+        $this->driver->add($this->builder->select('COUNT(*)')->from($this->table))->execute();
+        if($this->driver->getQuery()->isExecuted) {
+            $this->rowsCount = $this->driver->loadColumn();
+            return $this->rowsCount;
+        }
+        return [];
+    }
+
     /**
      * @return array|mixed
      */
@@ -80,7 +89,7 @@ class EntityTable
     {
         $this->driver->add($this->builder->select('column_name')->from('information_schema.columns')->where('table_name=\'' . $this->table . '\'')->andWhere('extra=\'auto_increment\''))->execute();
         if($this->driver->getQuery()->isExecuted) {
-            $this->primaryKey = $this->driver->loadColumns();
+            $this->primaryKey = $this->driver->loadColumn();
             return $this->primaryKey;
         }
         return [];
