@@ -8,11 +8,10 @@
 
 namespace Rabbit\ORM;
 
-
 use Rabbit\File\Drivers\Ini;
 use Rabbit\ORM\Drivers\BaseDriver;
 
-class ORM
+class Database
 {
 
     private $_configPath;
