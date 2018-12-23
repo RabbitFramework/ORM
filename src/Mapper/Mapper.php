@@ -38,9 +38,6 @@ class Mapper
         $this->builder = $this->driver->getBuilder();
 
         $this->table = new EntityTable($this, $table ?? strtolower(get_class($this)));
-
-        $this->getAllColumnsEntities();
-        $this->getAllRowsEntities();
     }
 
     public function saveColumn(string $name) {
