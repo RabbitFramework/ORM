@@ -13,7 +13,7 @@ use Rabbit\ORM\Queries\Query;
 
 /**
  * Interface DriverInterface
- * @package Rabbit\ORM\Drivers
+ * @package Rabbit\Database\Drivers
  */
 interface DriverInterface
 {

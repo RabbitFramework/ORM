@@ -21,7 +21,7 @@ class MySqlDriver extends BaseDriver
             parent::__construct(['host' => $host, 'database' => $database, 'username' => $username, 'password' => $password, 'charset' => $charset]);
             $this->getConnection();
         } else {
-            throw new DriverException('[Rabbit => ORM->MySqlDriver::__construct()] Unable to construct the class because the extension `pdo_mysql` is not loaded in the php.ini');
+            throw new DriverException('[Rabbit => Database->MySqlDriver::__construct()] Unable to construct the class because the extension `pdo_mysql` is not loaded in the php.ini');
         }
     }
 

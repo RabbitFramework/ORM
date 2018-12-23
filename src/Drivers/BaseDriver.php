@@ -17,7 +17,7 @@ use Rabbit\ORM\Queries\PdoQueryContainer;
 
 /**
  * Class BaseDriver
- * @package Rabbit\ORM\Drivers
+ * @package Rabbit\Database\Drivers
  */
 abstract class BaseDriver implements DriverInterface
 {
