@@ -11,7 +11,7 @@ namespace Rabbit\ORM\Builders;
 
 /**
  * Class MySqlQuery
- * @package Rabbit\ORM\Builders
+ * @package Rabbit\Database\Builders
  */
 class MySqlQuery extends BaseBuilder implements QueryInterface
 {
@@ -44,12 +44,12 @@ class MySqlQuery extends BaseBuilder implements QueryInterface
                                 $this->select[array_search($name, $this->select)] = ['column' => $name, 'alias' => $alias];
                             }
                         } elseif($this->lastExecuted === self::FROM) {
-                            throw new BuilderException('[Rabbit => ORM->MySqlQueryBuilder::as()] Unable to perform the function, the lastExecuted function is ORM->MySqlQueryBuilder::from() and it can be only one $alias');
+                            throw new BuilderException('[Rabbit => Database->MySqlQueryBuilder::as()] Unable to perform the function, the lastExecuted function is Database->MySqlQueryBuilder::from() and it can be only one $alias');
                         }
                     }
                 }
             } else {
-                throw new BuilderException('[Rabbit => ORM->MySqlQueryBuilder::as()] Unable to perform the function, the count of array $columns and $aliases is not equal');
+                throw new BuilderException('[Rabbit => Database->MySqlQueryBuilder::as()] Unable to perform the function, the count of array $columns and $aliases is not equal');
             }
         } elseif(is_string($reference) && is_string($alias)) {
             if($this->lastExecuted === self::SELECT) {
@@ -60,7 +60,7 @@ class MySqlQuery extends BaseBuilder implements QueryInterface
                 $this->from = ['table' => $reference, 'alias' => $alias];
             }
         } else {
-            throw new BuilderException('[Rabbit => ORM->MySqlQueryBuilder::as()] Unable to perform the function, the $column and/or $alias variables are not array or string');
+            throw new BuilderException('[Rabbit => Database->MySqlQueryBuilder::as()] Unable to perform the function, the $column and/or $alias variables are not array or string');
         }
         $this->lastExecuted = self::AS;
         return $this;

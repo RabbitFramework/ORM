@@ -18,7 +18,10 @@
         "psr-4": {
             "Rabbit\\ORM\\": "src",
             "Rabbit\\ORM\\Drivers\\": "src/Drivers",
-            "Rabbit\\ORM\\Queries\\": "src/Queries"
+            "Rabbit\\ORM\\Builders\\": "src/Builders",
+            "Rabbit\\ORM\\Queries\\": "src/Queries",
+            "Rabbit\\ORM\\Mapper\\": "src/Mapper",
+            "Rabbit\\ORM\\Model\\": "src/Model"
         }
     }
 }

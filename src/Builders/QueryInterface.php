@@ -14,7 +14,7 @@ use Rabbit\ORM\Builders\Entities\UpdateEntityInterface;
 
 /**
  * Interface QueryInterface
- * @package Rabbit\ORM\Builders
+ * @package Rabbit\Database\Builders
  */
 interface QueryInterface
 {

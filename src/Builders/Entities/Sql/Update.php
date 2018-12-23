@@ -12,7 +12,7 @@ use Rabbit\ORM\Builders\Entities\UpdateEntityInterface;
 
 /**
  * Class Update
- * @package Rabbit\ORM\Builders\Entities\Sql
+ * @package Rabbit\Database\Builders\Entities\Sql
  */
 class Update extends BaseEntity implements UpdateEntityInterface
 {

@@ -11,7 +11,7 @@ namespace Rabbit\ORM\Builders\Entities;
 
 /**
  * Interface UpdateEntityInterface
- * @package Rabbit\ORM\Builders\Entities
+ * @package Rabbit\Database\Builders\Entities
  */
 interface UpdateEntityInterface extends BaseEntityInterface
 {
