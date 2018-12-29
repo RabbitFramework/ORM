@@ -9,6 +9,7 @@
 namespace Rabbit\ORM\Queries;
 
 use Rabbit\ORM\Database;
+use Rabbit\ORM\Drivers\DriverInterface;
 
 /**
  * Class Query
@@ -22,6 +23,8 @@ class Query
      * @var string
      */
     public $query = '';
+
+    private $connection;
 
     /**
      * The prepared query
@@ -74,8 +77,27 @@ class Query
      * PDOQuery constructor.
      * @param string $query
      */
-    public function __construct(string $query = '') {
+    public function __construct(string $query = '', DriverInterface $db) {
         $this->query = $query;
+        $this->connection = $db->getConnection();
+    }
+
+    public function prepare(array $parameters = []) {
+        $this->preparedQuery = $this->connection->prepare($this->query);
+        foreach (array_merge($this->parameters, $parameters) as $name => $parameter) {
+            $parameterValue = $parameter['value'] ?? $parameter;
+            $parameterType = $parameter['type'] ?? \PDO::PARAM_STR;
+            $this->preparedQuery->bindParam($name, $parameterValue, $parameterType);
+        }
+        return $this;
+    }
+
+    public function execute(array $parameters = []) {
+        if(!$this->isPrepared) {
+            $this->prepare($parameters);
+        }
+        $this->isExecuted = $this->preparedQuery->execute();
+        return $this;
     }
 
     /**
@@ -119,26 +141,13 @@ class Query
     /* ~~ Value/Parameters seter-geter-has ~~ */
 
     /**
-     * Use to add/modify a parameter
-     *
-     * @param string $name
-     * @param $value
-     * @param null $type
-     *
-     * @return $this;
-     */
-    public function setParameter(string $name, $value, $type = null) {
-        $this->parameters[$name] = isset($type) ? ['value' => $value, 'type' => $type] : $value;
-        return $this;
-    }
-
-    /**
-     * Use to set  add/replace all parameters in a array of type ['name' => ['value' => $value, 'type' => $type]] or ['name' => 'value']
+     * Use to add/replace all parameters in a array of type ['name' => ['value' => $value, 'type' => $type]] or ['name' => 'value']
      *
      * @param array $parameters
      */
     public function setParameters(array $parameters) {
-        $this->parameters = array_replace($this->parameters, $parameters);
+        $this->parameters = $parameters;
+        return $this;
     }
 
     /**

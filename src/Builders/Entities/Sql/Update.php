@@ -14,7 +14,7 @@ use Rabbit\ORM\Builders\Entities\UpdateEntityInterface;
  * Class Update
  * @package Rabbit\Database\Builders\Entities\Sql
  */
-class Update extends BaseEntity implements UpdateEntityInterface
+final class Update extends BaseEntity implements UpdateEntityInterface
 {
 
     /**
@@ -71,7 +71,7 @@ class Update extends BaseEntity implements UpdateEntityInterface
         $sql = '';
         foreach ($this->queryDatas['columns'] as $key => $column) {
             if(isset($this->queryDatas['values'][$key])) {
-                $sql .= "{$column}={$this->queryDatas['values'][$key]}".(count($this->queryDatas['columns'])-1 !== $key ? ', ' : '');
+                $sql .= "{$column}='".htmlspecialchars(addslashes($this->queryDatas['values'][$key]))."'".(count($this->queryDatas['columns'])-1 !== $key ? ', ' : '');
             }
         }
         return $sql;

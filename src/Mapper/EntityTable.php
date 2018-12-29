@@ -35,7 +35,7 @@ class EntityTable
      * EntityTable constructor.
      * @param $table
      */
-    public function __construct(Mapper $mapper, $table)
+    public function __construct(MapperInterface $mapper, $table)
     {
         $this->driver = $mapper->getDriver();
         $this->builder = $mapper->getBuilder();
@@ -56,6 +56,7 @@ class EntityTable
         $this->driver->add($this->builder->select('column_name')->from('information_schema.columns')->where('table_name=\''.$this->table.'\''))->execute();
         if($this->driver->getQuery()->isExecuted) {
             $this->columnsNames = $this->driver->loadColumns();
+            $this->driver->closeCursor();
             return $this->columnsNames;
         }
         return [];
@@ -65,6 +66,7 @@ class EntityTable
         $this->driver->add($this->builder->select('COUNT(*)')->from($this->table))->execute();
         if($this->driver->getQuery()->isExecuted) {
             $this->rowsCount = $this->driver->loadColumn();
+            $this->driver->closeCursor();
             return $this->rowsCount;
         }
         return [];
@@ -77,6 +79,7 @@ class EntityTable
         $this->driver->add($this->builder->select('data_type')->from('information_schema.columns')->where('table_name=\''.$this->table.'\''))->execute();
         if($this->driver->getQuery()->isExecuted) {
             $this->columnsTypes = $this->driver->loadColumns();
+            $this->driver->closeCursor();
             return $this->columnsTypes;
         }
         return [];
@@ -90,6 +93,7 @@ class EntityTable
         $this->driver->add($this->builder->select('column_name')->from('information_schema.columns')->where('table_name=\'' . $this->table . '\'')->andWhere('extra=\'auto_increment\''))->execute();
         if($this->driver->getQuery()->isExecuted) {
             $this->primaryKey = $this->driver->loadColumn();
+            $this->driver->closeCursor();
             return $this->primaryKey;
         }
         return [];

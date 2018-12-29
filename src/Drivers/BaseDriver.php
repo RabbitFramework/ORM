@@ -124,10 +124,10 @@ abstract class BaseDriver implements DriverInterface
      * @return self
      */
     public function add(string $query) {
-        $query = new Query($query);
+        $query = new Query($query, $this);
         $this->queries[] = $query;
         $this->_currentQuery = array_search($query, $this->queries);
-        return $this;
+        return $this->queries[$this->_currentQuery];
     }
 
     /**
@@ -209,4 +209,12 @@ abstract class BaseDriver implements DriverInterface
      * @return mixed
      */
     abstract public function loadColumns(int $id = null);
+
+    abstract public function getDriverErrorCode();
+
+    abstract public function getDriverErrorInfo();
+
+    abstract public function getQueryErrorCode(int $id = null);
+
+    abstract public function getQueryErrorInfo(int $id = null);
 }

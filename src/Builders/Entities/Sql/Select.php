@@ -10,7 +10,7 @@ namespace Rabbit\ORM\Builders\Entities\Sql;
 
 use Rabbit\ORM\Builders\Entities\SelectEntityInterface;
 
-class Select extends BaseEntity implements SelectEntityInterface
+final class Select extends BaseEntity implements SelectEntityInterface
 {
 
     public function __construct(string ...$names)

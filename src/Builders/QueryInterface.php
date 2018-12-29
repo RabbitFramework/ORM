@@ -8,8 +8,11 @@
 
 namespace Rabbit\ORM\Builders;
 
+use Rabbit\ORM\Builders\Entities\AlterColumnEntityInterface;
+use Rabbit\ORM\Builders\Entities\CreateColumnEntityInterface;
 use Rabbit\ORM\Builders\Entities\InsertEntityInterface;
 use Rabbit\ORM\Builders\Entities\SelectEntityInterface;
+use Rabbit\ORM\Builders\Entities\Sql\MultiRequest;
 use Rabbit\ORM\Builders\Entities\UpdateEntityInterface;
 
 /**
@@ -24,5 +27,11 @@ interface QueryInterface
     public static function insert(string $insert = '') : InsertEntityInterface;
 
     public static function update(string $update = '') : UpdateEntityInterface;
+
+    public static function alterColumn(string $alter = '') : AlterColumnEntityInterface;
+
+    public static function createColumn(string $alter = '') : CreateColumnEntityInterface;
+
+    public static function createMulti() : MultiRequest;
 
 }

@@ -8,7 +8,7 @@
 namespace Rabbit\ORM\Model;
 
 if(class_exists('\Rabbit\MVC\Model')) {
-    class MapperModel extends \Rabbit\ORM\Mapper\Mapper implements \Rabbit\MVC\ModelInterface
+    class MapperModel extends \Rabbit\ORM\Mapper\TableMapper implements \Rabbit\MVC\ModelInterface
     {
 
     }

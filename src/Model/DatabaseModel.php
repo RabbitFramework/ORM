@@ -8,10 +8,11 @@
 
 namespace Rabbit\ORM\Model;
 
+use Rabbit\MVC\ModelInterface;
 use Rabbit\ORM\Database;
 
 if(class_exists('\Rabbit\MVC\Model')) {
-    class DatabaseModel implements Rabbit\MVC\ModelInterfac
+    class DatabaseModel implements ModelInterface
     {
         protected $driver;
         protected $builder;

@@ -9,7 +9,7 @@
 namespace Rabbit\ORM\Builders\SqlEntities;
 
 
-class DropTable
+final class DropTable
 {
 
 }

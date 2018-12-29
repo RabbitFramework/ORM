@@ -69,7 +69,7 @@ interface DriverInterface
 
     /**
      * @param string $query
-     * @return mixed
+     * @return Query
      */
     public function add(string $query);
 
@@ -142,5 +142,10 @@ interface DriverInterface
      * @return mixed
      */
     public function loadColumns(int $id = null);
+
+    /**
+     * @return self
+     */
+    public function closeCursor();
 
 }

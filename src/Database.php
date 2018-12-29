@@ -46,7 +46,7 @@ class Database
         }
 
         if(!isset($this->_driver)) {
-            $this->_driver = $this->_drivers->get($this->_configParser->getKey('TYPE') ?? 'mysql')->getInstance(['host' => $this->_configParser->getKey('HOST') ?? 'localhost', 'database' => $this->_configParser->getKey('DATABASE') ?? 'default', 'username' => $this->_configParser->getKey('USERNAME') ?? 'root', 'password' => $this->_configParser->getKey('PASSWORD') ?? '', 'charset' => $this->_configParser->getKey('CHARSET') ?? 'utf8']);
+            $this->_driver = $this->_drivers->get($this->_configParser->getKey('TYPE') ?? 'mysql')->getInstance(['host' => $this->_configParser->getKey('HOST') ?? 'localhost', 'database' => $this->_configParser->getKey('DATABASE') ?? 'default', 'username' => $this->_configParser->getKey('USERNAME') ?? 'root', 'password' => $this->_configParser->getKey('PASSWORD') ?? '', 'charset' => $this->_configParser->getKey('CHARSET') ?? 'utf8', 'attributes' => explode(', ', $this->_configParser->getKey('ATTRIBUTES')), 'attributesValues' => explode(', ', $this->_configParser->getKey('ATTRIBUTES_VALUES'))]);
         }
 
 

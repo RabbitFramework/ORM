@@ -85,15 +85,17 @@ class EntityColumn
         foreach (array_keys($onlineKeys) as $getKeys) {
             if(isset($this->values[$getKeys])) { // UPDATE
                 if($this->values[$getKeys] !== $onlineKeys[$getKeys]) {
-                    $this->driver->add($this->builder->update($this->table->getTableName())->column($this->columnName)->values("'".htmlspecialchars(addslashes($this->values[$getKeys]))."'")->where("{$primaryKey}={$this->mapper->$primaryKey->column[$getKeys]}"))->execute();
+                    $this->driver->add($this->builder->update($this->table->getTableName())->column($this->columnName)->values("'".htmlspecialchars(addslashes($this->values[$getKeys]))."'")->where("{$primaryKey}={$this->mapper->$primaryKey->values[$getKeys]}"))->execute();
                 }
             } else { // DELETE
                 $this->driver->add($this->builder->update($this->table->getTableName())->column($this->columnName)->values('null')->where("{$primaryKey}={$this->mapper->$primaryKey->values[$getKeys]}"))->execute();
             }
         }
         foreach (array_diff(array_keys($this->values), array_keys($onlineKeys)) as $diff) { // Add
-            $this->driver->add($this->builder->insert($this->table->getTableName())->column($this->columnName)->values("'".htmlspecialchars(addslashes($this->values[$diff]))."'"))->execute();
+            var_dump($this->builder->insert($this->table->getTableName())->column($this->columnName)->values(htmlspecialchars(addslashes($this->values[$diff])))->getQuery());
+            $this->driver->add($this->builder->insert($this->table->getTableName())->column($this->columnName)->values(htmlspecialchars(addslashes($this->values[$diff]))))->execute();
             if($this->driver->getQuery()->isExecuted) {
+                echo 'here';
                 $this->driver->add($this->builder->select("max({$primaryKey})")->from($this->table->getTableName()))->execute();
                 if($this->driver->getQuery()->isExecuted) {
                     $this->mapper->$primaryKey->column[] = $this->driver->loadColumn();

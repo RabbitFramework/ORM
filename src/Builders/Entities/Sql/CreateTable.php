@@ -9,7 +9,7 @@
 namespace Rabbit\ORM\Builders\SqlEntities;
 
 
-class CreateTable
+final class CreateTable
 {
 
 }

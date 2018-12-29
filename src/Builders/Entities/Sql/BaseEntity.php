@@ -13,7 +13,7 @@ namespace Rabbit\ORM\Builders\Entities\Sql;
  * Class BaseEntity
  * @package Rabbit\Database\Builders\Entities\Sql
  */
-class BaseEntity
+abstract class BaseEntity
 {
 
     /**

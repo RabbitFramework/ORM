@@ -9,7 +9,7 @@
 namespace Rabbit\ORM\Builders\SqlEntities;
 
 
-class AlterTable
+final class AlterTable
 {
 
 }
