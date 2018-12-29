@@ -95,9 +95,9 @@ abstract class TableMapper implements MapperInterface
      * TODO: Create delete column method
      */
     public function deleteColumn(string $columnName) {
-        if($this->hasColumn($columnName)) {
-            $this->driver->add()
-        }
+//        if($this->hasColumn($columnName)) {
+//            $this->driver->add()
+//        }
     }
 
     /**
