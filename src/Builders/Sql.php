@@ -20,7 +20,7 @@ use Rabbit\ORM\Builders\Entities\Sql\Insert;
 use Rabbit\ORM\Builders\Entities\Sql\Select;
 use Rabbit\ORM\Builders\Entities\Sql\Update;
 
-class Sql implements QueryInterface
+class Sql implements BuilderInterface
 {
 
     public static function select(string $select = '') : SelectEntityInterface {
@@ -41,10 +41,6 @@ class Sql implements QueryInterface
 
     public static function createColumn(string $create = '') : CreateColumnEntityInterface {
         return new CreateColumn($create);
-    }
-
-    public static function createMulti() : MultiRequest {
-        return new MultiRequest();
     }
 
 }

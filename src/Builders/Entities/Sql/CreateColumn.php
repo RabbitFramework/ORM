@@ -9,7 +9,7 @@
 namespace Rabbit\ORM\Builders\Entities\Sql;
 
 use Rabbit\ORM\Builders\Entities\CreateColumnEntityInterface;
-use Rabbit\ORM\Mapper\EntityInterface;
+use Rabbit\ORM\Entities\EntityInterface;
 
 final class CreateColumn extends BaseEntity implements CreateColumnEntityInterface
 {

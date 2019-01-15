@@ -8,12 +8,11 @@
 
 namespace Rabbit\ORM\Builders;
 
-
 /**
  * Class MySqlQuery
  * @package Rabbit\Database\Builders
  */
-class MySqlQuery extends BaseBuilder implements QueryInterface
+final class MySqlQuery extends BaseBuilder implements BuilderInterface
 {
 
     /**
