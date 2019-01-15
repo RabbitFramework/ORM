@@ -8,12 +8,13 @@
 
 namespace Rabbit\ORM\Drivers;
 
+use Rabbit\ORM\Builders\BuilderInterface;
 use Rabbit\ORM\Builders\QueryInterface;
 use Rabbit\DependencyContainer\DependencyContainer;
 use Rabbit\ORM\Builders\Sql;
 use Rabbit\ORM\Drivers\Attributes\MySqlAttributeCollection;
 
-class MySqlDriver extends BaseDriver
+final class MySqlDriver extends BaseDriver
 {
 
     public function __construct(string $host, string $database, string $username, string $password, string $charset = 'utf8', array $attributes = [], array $attributesValues = [])
@@ -43,102 +44,17 @@ class MySqlDriver extends BaseDriver
         return $this->_connection;
     }
 
-    public function execute(int $id = null) {
-        if($this->hasQuery($id ?? $this->_currentQuery)) {
-            $this->queries[$id ?? $this->_currentQuery]->execute();
-            return $this;
-        }
-    }
-
-    public function prepare(int $id = null) {
-        if($this->hasQuery($id ?? $this->_currentQuery)) {
-            $this->queries[$id ?? $this->_currentQuery]->prepare();
-            return $this;
-        }
-    }
-
-    public function loadObject(int $id = null) {
-        if($this->queries[$id ?? $this->_currentQuery]->isExecuted()) {
-            return $this->queries[$id ?? $this->_currentQuery]->getPreparedQuery()->fetch(\PDO::FETCH_OBJ);
-        }
-        return new \stdClass();
-    }
-
-    public function loadObjects(int $id = null) {
-        if($this->queries[$id ?? $this->_currentQuery]->isExecuted()) {
-            return $this->queries[$id ?? $this->_currentQuery]->getPreparedQuery()->fetchAll(\PDO::FETCH_OBJ);
-        }
-        return [];
-    }
-
-    public function loadAssoc(int $id = null) {
-        if($this->queries[$id ?? $this->_currentQuery]->isExecuted()) {
-            return $this->queries[$id ?? $this->_currentQuery]->getPreparedQuery()->fetch(\PDO::FETCH_ASSOC);
-        }
-        return [];
-    }
-
-    public function loadAssocs(int $id = null) {
-        if($this->queries[$id ?? $this->_currentQuery]->isExecuted()) {
-            return $this->queries[$id ?? $this->_currentQuery]->getPreparedQuery()->fetchAll(\PDO::FETCH_ASSOC);
-        }
-        return [];
-    }
-
-    public function loadColumn(int $id = null) {
-        if($this->queries[$id ?? $this->_currentQuery]->isExecuted()) {
-            return $this->queries[$id ?? $this->_currentQuery]->getPreparedQuery()->fetch(\PDO::FETCH_COLUMN);
-        }
-        return '';
-    }
-
-    public function loadColumns(int $id = null) {
-        if($this->queries[$id ?? $this->_currentQuery]->isExecuted()) {
-            return $this->queries[$id ?? $this->_currentQuery]->getPreparedQuery()->fetchAll(\PDO::FETCH_COLUMN);
-        }
-        return [];
-    }
-
-    public function closeCursor() {
-        if($this->queries[$id ?? $this->_currentQuery]->isExecuted()) {
-            $this->queries[$id ?? $this->_currentQuery]->getPreparedQuery()->closeCursor();
-        }
-        return $this;
-    }
-
-    public function rowCount(int $id = null) {
-        if($this->queries[$id ?? $this->_currentQuery]->isExecuted()) {
-            return $this->queries[$id ?? $this->_currentQuery]->getPreparedQuery()->rowCount();
-        } else {
-            return 0;
-        }
-    }
-
-    public function getBuilder() : QueryInterface {
+    public function getBuilder() : BuilderInterface {
         return DependencyContainer::getInstance()->get(Sql::class)->getInstance(['driver' => $this]);
     }
 
-    public function getDriverErrorCode()
+    public function getErrorCode()
     {
         return $this->_connection->errorCode();
     }
 
-    public function getDriverErrorInfo()
+    public function getErrorInfo()
     {
         return $this->_connection->errorInfo();
-    }
-
-    public function getQueryErrorCode(int $id = null)
-    {
-        if(!$this->queries[$id ?? $this->_currentQuery]->isExecuted()) {
-            return $this->queries[$id ?? $this->_currentQuery]->getPreparedQuery()->errorCode();
-        }
-    }
-
-    public function getQueryErrorInfo(int $id = null)
-    {
-        if(!$this->queries[$id ?? $this->_currentQuery]->isExecuted()) {
-            return $this->queries[$id ?? $this->_currentQuery]->getPreparedQuery()->errorInfo();
-        }
     }
 }

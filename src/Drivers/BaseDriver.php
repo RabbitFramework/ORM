@@ -8,12 +8,8 @@
 
 namespace Rabbit\ORM\Drivers;
 
-
-use Rabbit\ORM\Builders\BaseBuilder;
-use Rabbit\ORM\Builders\QueryInterface;
-use Rabbit\ORM\Queries\Query;
-use Rabbit\ORM\Queries\PDOQuery;
-use Rabbit\ORM\Queries\PdoQueryContainer;
+use Rabbit\ORM\Builders\BuilderInterface;
+use \Rabbit\ORM\Drivers\Query;
 
 /**
  * Class BaseDriver
@@ -53,6 +49,11 @@ abstract class BaseDriver implements DriverInterface
      * @return mixed
      */
     abstract public function getConnection();
+
+    /**
+     * @return BuilderInterface
+     */
+    abstract public function getBuilder() : BuilderInterface;
 
     /**
      *
@@ -115,33 +116,14 @@ abstract class BaseDriver implements DriverInterface
     }
 
     /**
-     * @return QueryInterface
-     */
-    abstract public function getBuilder() : QueryInterface;
-
-    /**
      * @param string $query
      * @return self
      */
-    public function add(string $query) {
+    public function createQuery(string $query) {
         $query = new Query($query, $this);
         $this->queries[] = $query;
         $this->_currentQuery = array_search($query, $this->queries);
         return $this->queries[$this->_currentQuery];
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLast() {
-        return $this->queries[$this->getLastId()];
-    }
-
-    /**
-     * @return int
-     */
-    public function getLastId() {
-        return $this->_currentQuery;
     }
 
     /**
@@ -162,59 +144,7 @@ abstract class BaseDriver implements DriverInterface
         return isset($this->queries[$id]);
     }
 
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    abstract public function prepare(int $id = null);
+    abstract public function getErrorCode();
 
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    abstract public function execute(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    abstract public function loadObject(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    abstract public function loadObjects(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    abstract public function loadAssoc(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    abstract public function loadAssocs(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    abstract public function loadColumn(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    abstract public function loadColumns(int $id = null);
-
-    abstract public function getDriverErrorCode();
-
-    abstract public function getDriverErrorInfo();
-
-    abstract public function getQueryErrorCode(int $id = null);
-
-    abstract public function getQueryErrorInfo(int $id = null);
+    abstract public function getErrorInfo();
 }

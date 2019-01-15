@@ -8,8 +8,7 @@
 
 namespace Rabbit\ORM\Drivers;
 
-use  \Rabbit\ORM\Builders\QueryInterface;
-use Rabbit\ORM\Queries\Query;
+use Rabbit\ORM\Builders\BuilderInterface;
 
 /**
  * Interface DriverInterface
@@ -28,29 +27,10 @@ interface DriverInterface
     public function closeConnection();
 
     /**
-     * @param string $parameterName
-     * @param $value
-     * @return mixed
-     */
-    public function setConnectionParameter(string $parameterName, $value);
-
-    /**
      * @param array $parameters
      * @return mixed
      */
     public function setConnectionParameters(array $parameters = []);
-
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    public function deleteConnectionParameter(string $name);
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasConnectionParameter(string $name) : bool;
 
     /**
      * @return bool
@@ -63,89 +43,25 @@ interface DriverInterface
     public function hasConnection() : bool;
 
     /**
-     * @return QueryInterface
+     * @return BuilderInterface
      */
-    public function getBuilder() : QueryInterface;
+    public function getBuilder() : BuilderInterface;
 
     /**
      * @param string $query
      * @return Query
      */
-    public function add(string $query);
-
-    /**
-     * @return mixed
-     */
-    public function getLast();
-
-    /**
-     * @return mixed
-     */
-    public function getLastId();
+    public function createQuery(string $query);
 
     /**
      * @param int|null $id
      * @return Query
      */
-    public function getQuery(int $id = null) : Query;
+    public function getQuery(int $id = 0) : Query;
 
     /**
      * @param int $id
      * @return bool
      */
     public function hasQuery(int $id = 0) : bool;
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    public function prepare(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    public function execute(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    public function loadObject(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    public function loadObjects(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    public function loadAssoc(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    public function loadAssocs(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    public function loadColumn(int $id = null);
-
-    /**
-     * @param int|null $id
-     * @return mixed
-     */
-    public function loadColumns(int $id = null);
-
-    /**
-     * @return self
-     */
-    public function closeCursor();
-
 }
