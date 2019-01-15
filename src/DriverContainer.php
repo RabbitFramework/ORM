@@ -8,10 +8,10 @@
 
 namespace Rabbit\ORM;
 
-use Rabbit\DependencyContainer\DependencyContainer;
+use Rabbit\DependencyInjector\Container;
 use Rabbit\ORM\Drivers\MySqlDriver;
 
-class DriverContainer extends DependencyContainer
+class DriverContainer extends Container
 {
 
     public static $_instance;
