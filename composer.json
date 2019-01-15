@@ -3,7 +3,7 @@
     "description": "Object relational mapping component of RabbitPHP framework",
     "type": "component",
     "require": {
-        "rabbitphp/dependency-container": "*",
+        "rabbitphp/dependency-injector": "*",
         "rabbitphp/file": "*",
         "rabbitphp/mvc": "*"
     },
@@ -19,9 +19,14 @@
             "Rabbit\\ORM\\": "src",
             "Rabbit\\ORM\\Drivers\\": "src/Drivers",
             "Rabbit\\ORM\\Builders\\": "src/Builders",
-            "Rabbit\\ORM\\Queries\\": "src/Queries",
-            "Rabbit\\ORM\\Mapper\\": "src/Mapper",
-            "Rabbit\\ORM\\Model\\": "src/Model"
-        }
+            "Rabbit\\ORM\\Entity\\": "src/Entity",
+            "Rabbit\\ORM\\Repository\\": "src/Repository"
+        },
+        "files": [
+            "src/globals.php"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true
     }
 }
