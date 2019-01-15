@@ -19,7 +19,7 @@ use Rabbit\ORM\Builders\Entities\UpdateEntityInterface;
  * Interface QueryInterface
  * @package Rabbit\Database\Builders
  */
-interface QueryInterface
+interface BuilderInterface
 {
 
     public static function select(string $select = '') : SelectEntityInterface;
@@ -31,7 +31,5 @@ interface QueryInterface
     public static function alterColumn(string $alter = '') : AlterColumnEntityInterface;
 
     public static function createColumn(string $alter = '') : CreateColumnEntityInterface;
-
-    public static function createMulti() : MultiRequest;
 
 }
